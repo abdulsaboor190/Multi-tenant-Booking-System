@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BookWise.Api/BookWise.Api.csproj" />
+    <Project Path="src/BookWise.Application/BookWise.Application.csproj" />
+    <Project Path="src/BookWise.Domain/BookWise.Domain.csproj" />
+    <Project Path="src/BookWise.Infrastructure/BookWise.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BookWise.IntegrationTests/BookWise.IntegrationTests.csproj" />
+    <Project Path="tests/BookWise.UnitTests/BookWise.UnitTests.csproj" />
+  </Folder>
+</Solution>
