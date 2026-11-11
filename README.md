@@ -30,15 +30,19 @@ A multi-tenant booking platform where many independent businesses (clinics, salo
    ```
    docker compose up -d
    ```
-3. Create the database tables
+3. Restore the .NET packages
+   ```
+   dotnet restore
+   ```
+4. Create the database tables
    ```
    dotnet ef database update --project src/BookWise.Infrastructure --startup-project src/BookWise.Api
    ```
-4. Start the API
+5. Start the API
    ```
    dotnet run --project src/BookWise.Api --launch-profile http
    ```
-5. Check it works
+6. Check it works
    - Health check: http://localhost:5099/health (should say Healthy)
    - API docs: http://localhost:5099/scalar/v1
    - Test inbox (Mailpit): http://localhost:8025
