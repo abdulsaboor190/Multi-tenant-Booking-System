@@ -1,3 +1,5 @@
+using BookWise.Api.Dev;
+using BookWise.Api.ErrorHandling;
 using BookWise.Infrastructure;
 using Serilog;
 
@@ -18,15 +20,20 @@ try
         ?? throw new InvalidOperationException("Connection string 'Default' is not configured.");
 
     builder.Services.AddOpenApi();
+    builder.Services.AddProblemDetails();
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddInfrastructure(connectionString);
 
     var app = builder.Build();
+
+    app.UseExceptionHandler();
 
     app.UseSerilogRequestLogging();
 
     if (app.Environment.IsDevelopment())
     {
         app.MapOpenApi();
+        app.MapDevEndpoints();
     }
 
     app.UseHttpsRedirection();
