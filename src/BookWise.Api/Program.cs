@@ -1,6 +1,7 @@
 using BookWise.Api.Dev;
 using BookWise.Api.ErrorHandling;
 using BookWise.Infrastructure;
+using BookWise.Infrastructure.Persistence;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -23,6 +24,7 @@ try
     builder.Services.AddProblemDetails();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddInfrastructure(connectionString);
+    builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>("database");
 
     var app = builder.Build();
 
@@ -37,6 +39,8 @@ try
     }
 
     app.UseHttpsRedirection();
+
+    app.MapHealthChecks("/health");
 
     app.Run();
 }
