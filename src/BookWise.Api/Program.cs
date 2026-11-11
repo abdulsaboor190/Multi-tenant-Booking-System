@@ -1,5 +1,6 @@
 using BookWise.Api.Dev;
 using BookWise.Api.ErrorHandling;
+using BookWise.Application;
 using BookWise.Infrastructure;
 using BookWise.Infrastructure.Persistence;
 using Scalar.AspNetCore;
@@ -24,6 +25,7 @@ try
     builder.Services.AddOpenApi();
     builder.Services.AddProblemDetails();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    builder.Services.AddApplication();
     builder.Services.AddInfrastructure(connectionString);
     builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>("database");
 
