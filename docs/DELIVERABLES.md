@@ -576,15 +576,15 @@ Copy this table into your repo and update it as you go.
 
 | ID | Deliverable | Status | Date done | PR |
 |---|---|---|---|---|
-| D0.1 | Environment installed | Not started | | |
-| D0.2 | Repository created | Not started | | |
-| D0.3 | Smoke test passed | Not started | | |
-| D1.1 | Layered solution skeleton | Not started | | |
-| D1.2 | Docker Compose services | Not started | | |
-| D1.3 | Database and initial migration | Not started | | |
-| D1.4 | Cross-cutting API basics | Not started | | |
-| D1.5 | CI pipeline v1 | Not started | | |
-| D1.6 | Run-locally instructions | Not started | | |
+| D0.1 | Environment installed | Done | 2026-11-11 | |
+| D0.2 | Repository created | Done | 2026-11-11 | |
+| D0.3 | Smoke test passed | Done | 2026-11-11 | |
+| D1.1 | Layered solution skeleton | Done | 2026-11-11 | |
+| D1.2 | Docker Compose services | Done | 2026-11-11 | |
+| D1.3 | Database and initial migration | Done | 2026-11-11 | |
+| D1.4 | Cross-cutting API basics | Done | 2026-11-11 | |
+| D1.5 | CI pipeline v1 | Done | 2026-11-11 | |
+| D1.6 | Run-locally instructions | Done | 2026-11-11 | |
 | D2.1 | Tenant and user schema | Not started | | |
 | D2.2 | Tenant context and query filters [KEY] | Not started | | |
 | D2.3 | Tenant registration | Not started | | |
