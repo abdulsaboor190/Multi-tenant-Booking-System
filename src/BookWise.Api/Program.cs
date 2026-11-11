@@ -2,6 +2,7 @@ using BookWise.Api.Dev;
 using BookWise.Api.ErrorHandling;
 using BookWise.Infrastructure;
 using BookWise.Infrastructure.Persistence;
+using Scalar.AspNetCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -35,6 +36,7 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.MapOpenApi();
+        app.MapScalarApiReference();
         app.MapDevEndpoints();
     }
 
