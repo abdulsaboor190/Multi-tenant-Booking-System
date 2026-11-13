@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\BookWise.Domain\BookWise.Domain.csproj" />
     <ProjectReference Include="..\..\src\BookWise.Application\BookWise.Application.csproj" />
+    <ProjectReference Include="..\..\src\BookWise.Infrastructure\BookWise.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

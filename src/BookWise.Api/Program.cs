@@ -19,14 +19,11 @@ try
         .ReadFrom.Services(services)
         .Enrich.FromLogContext());
 
-    var connectionString = builder.Configuration.GetConnectionString("Default")
-        ?? throw new InvalidOperationException("Connection string 'Default' is not configured.");
-
     builder.Services.AddOpenApi();
     builder.Services.AddProblemDetails();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddApplication();
-    builder.Services.AddInfrastructure(connectionString);
+    builder.Services.AddInfrastructure();
     builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>("database");
 
     var app = builder.Build();
