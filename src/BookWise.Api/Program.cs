@@ -1,4 +1,4 @@
-using BookWise.Api.Dev;
+using BookWise.Api.Endpoints;
 using BookWise.Api.ErrorHandling;
 using BookWise.Application;
 using BookWise.Infrastructure;
@@ -36,12 +36,12 @@ try
     {
         app.MapOpenApi();
         app.MapScalarApiReference();
-        app.MapDevEndpoints();
     }
 
     app.UseHttpsRedirection();
 
     app.MapHealthChecks("/health");
+    app.MapAuthEndpoints();
 
     app.Run();
 }

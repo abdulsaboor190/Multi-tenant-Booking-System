@@ -1,5 +1,6 @@
 using BookWise.Application.Abstractions;
 using BookWise.Infrastructure.Persistence;
+using BookWise.Infrastructure.Security;
 using BookWise.Infrastructure.Tenancy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,9 @@ public static class DependencyInjection
         });
 
         services.AddScoped<ITenantContext, TenantContext>();
+        services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
+        services.AddSingleton<IPasswordHasher, PasswordHasherService>();
+        services.AddSingleton(TimeProvider.System);
 
         return services;
     }

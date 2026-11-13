@@ -1,3 +1,4 @@
+using BookWise.Application.Common;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,22 @@ public sealed class GlobalExceptionHandler(
             });
         }
 
+        if (exception is ConflictException conflict)
+        {
+            logger.LogInformation("Conflict on {Method} {Path}: {Message}",
+                httpContext.Request.Method, httpContext.Request.Path, conflict.Message);
+            return await WriteProblemAsync(httpContext, exception, StatusCodes.Status409Conflict,
+                "Conflict", conflict.Message);
+        }
+
+        if (exception is AuthenticationFailedException authFailed)
+        {
+            logger.LogInformation("Authentication failed on {Method} {Path}",
+                httpContext.Request.Method, httpContext.Request.Path);
+            return await WriteProblemAsync(httpContext, exception, StatusCodes.Status401Unauthorized,
+                "Authentication failed.", authFailed.Message);
+        }
+
         logger.LogError(exception, "Unhandled exception on {Method} {Path}",
             httpContext.Request.Method, httpContext.Request.Path);
 
@@ -68,6 +85,19 @@ public sealed class GlobalExceptionHandler(
                 Title = "An unexpected error occurred.",
                 Detail = "Something went wrong on our side. Please try again, and quote the traceId if you contact support."
             }
+        });
+    }
+
+    private async ValueTask<bool> WriteProblemAsync(
+        HttpContext httpContext, Exception exception, int status, string title, string? detail)
+    {
+        httpContext.Response.StatusCode = status;
+
+        return await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+        {
+            HttpContext = httpContext,
+            Exception = exception,
+            ProblemDetails = new ProblemDetails { Status = status, Title = title, Detail = detail }
         });
     }
 }

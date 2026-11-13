@@ -1,14 +1,16 @@
 using System.Reflection;
 using BookWise.Application.Abstractions;
+using BookWise.Application.Common;
 using BookWise.Domain.Common;
 using BookWise.Domain.Tenants;
 using BookWise.Domain.Users;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace BookWise.Infrastructure.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options, ITenantContext tenantContext)
-    : DbContext(options)
+    : DbContext(options), IAppDbContext
 {
     public DbSet<Tenant> Tenants => Set<Tenant>();
     public DbSet<User> Users => Set<User>();
@@ -49,15 +51,34 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ITenantContext
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
         EnforceTenantRules();
-        return base.SaveChanges(acceptAllChangesOnSuccess);
+
+        try
+        {
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+        catch (DbUpdateException ex) when (IsUniqueViolation(ex))
+        {
+            throw new ConflictException("A record with the same unique value already exists.", ex);
+        }
     }
 
-    public override Task<int> SaveChangesAsync(
+    public override async Task<int> SaveChangesAsync(
         bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         EnforceTenantRules();
-        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+
+        try
+        {
+            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+        catch (DbUpdateException ex) when (IsUniqueViolation(ex))
+        {
+            throw new ConflictException("A record with the same unique value already exists.", ex);
+        }
     }
+
+    private static bool IsUniqueViolation(DbUpdateException exception)
+        => exception.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation };
 
     private void EnforceTenantRules()
     {
